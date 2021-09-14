@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryDarkColor"
+    tools:context=".HomeFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="395dp" />
+
+    <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
+        android:id="@+id/arrivalToLastTrainToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:customLayout="@layout/view_toggle_button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:selectedColor="@color/primaryColor" />
+
+    <TextView
+        android:id="@+id/datePickerText"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:background="@color/primaryLightColor"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/date_picker"
+        android:textColor="@color/primaryTextColor"
+        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+
+        app:layout_constraintBottom_toBottomOf="@+id/datePicker"
+        app:layout_constraintEnd_toStartOf="@+id/datePicker"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/datePicker" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        style="@style/datePickerStyle"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/primaryLightColor"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/datePickerText"
+        app:layout_constraintTop_toBottomOf="@+id/arrivalToLastTrainToggleButton" />
+
+    <TextView
+        android:id="@+id/timePickerText"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="@color/primaryLightColor"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/time_picker"
+        android:textColor="@color/primaryTextColor"
+        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+        app:layout_constraintBottom_toBottomOf="@+id/TimePickerText"
+        app:layout_constraintEnd_toStartOf="@+id/TimePickerText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/TimePickerText" />
+
+    <TimePicker
+        android:id="@+id/TimePickerText"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/primaryLightColor"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/timePickerText"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
+    <TextView
+        android:id="@+id/departureText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/primaryColor"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/departure_text"
+        android:textColor="@color/primaryLightColor"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/primaryLightColor"
+        android:ems="10"
+        android:hint="駅"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toEndOf="@+id/departureText"
+        app:layout_constraintTop_toBottomOf="@+id/TimePickerText" />
+
+    <TextView
+        android:id="@+id/arrivalText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/primaryColor"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/arrival_text"
+        android:textColor="@color/primaryLightColor"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName2" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName2"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="100dp"
+        android:background="@color/primaryLightColor"
+        android:ems="10"
+        android:hint="駅"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toEndOf="@+id/arrivalText"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+
+    <ImageButton
+        android:id="@+id/returnBtn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/shape_rounded_corners"
+        android:src="@drawable/image_button_pressed"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <Button
+        android:id="@+id/researchBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/research_btn_text"
+        android:textColor="@color/primaryLightColor"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

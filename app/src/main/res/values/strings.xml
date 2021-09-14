@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">乗換案内</string>
+    <string name="date_picker">日付</string>
+    <string name="time_picker">時刻</string>
+    <string name="departure_text">出発</string>
+    <string name="arrival_text">到着</string>
+    <string name="research_btn_text">検索</string>
+</resources>
