@@ -13,20 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="8dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="395dp" />
+        app:layout_constraintGuide_end="8dp" />
 
     <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
         android:id="@+id/arrivalToLastTrainToggleButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="16dp"
+        app:allowDeselection="false"
         app:customLayout="@layout/view_toggle_button"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -34,141 +35,116 @@
         app:selectedColor="@color/primaryColor" />
 
     <TextView
-        android:id="@+id/datePickerText"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:background="@color/primaryLightColor"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/date_picker"
-        android:textColor="@color/primaryTextColor"
-        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-
-        app:layout_constraintBottom_toBottomOf="@+id/datePicker"
-        app:layout_constraintEnd_toStartOf="@+id/datePicker"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/datePicker" />
-
-    <DatePicker
-        android:id="@+id/datePicker"
-        style="@style/datePickerStyle"
-        android:layout_width="0dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="6dp"
-        android:background="@color/primaryLightColor"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/datePickerText"
-        app:layout_constraintTop_toBottomOf="@+id/arrivalToLastTrainToggleButton" />
-
-    <TextView
         android:id="@+id/timePickerText"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:background="@color/primaryLightColor"
-        android:gravity="center"
+        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+        android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/time_picker"
         android:textColor="@color/primaryTextColor"
-        android:drawableLeft="@drawable/ic_baseline_access_time_24"
-        app:layout_constraintBottom_toBottomOf="@+id/TimePickerText"
-        app:layout_constraintEnd_toStartOf="@+id/TimePickerText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/TimePickerText" />
+        app:layout_constraintEnd_toEndOf="@+id/arrivalToLastTrainToggleButton"
+        app:layout_constraintStart_toStartOf="@+id/arrivalToLastTrainToggleButton"
+        app:layout_constraintTop_toBottomOf="@+id/arrivalToLastTrainToggleButton" />
 
-    <TimePicker
-        android:id="@+id/TimePickerText"
+    <EditText
+        android:id="@+id/editDepatureName"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="6dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/primaryLightColor"
-        android:timePickerMode="spinner"
+        android:ems="10"
+        android:hint="駅"
+        android:inputType="textPersonName"
+        android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/timePickerText"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/departureText"
+        app:layout_constraintTop_toBottomOf="@+id/timePickerText" />
 
     <TextView
         android:id="@+id/departureText"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:background="@color/primaryColor"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/departure_text"
         android:textColor="@color/primaryLightColor"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/editDepatureName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toTopOf="@+id/editDepatureName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editArraivalName"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/primaryLightColor"
         android:ems="10"
         android:hint="駅"
         android:inputType="textPersonName"
         android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toEndOf="@+id/departureText"
-        app:layout_constraintTop_toBottomOf="@+id/TimePickerText" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/arrivalText"
+        app:layout_constraintTop_toBottomOf="@+id/editDepatureName" />
+
+    <ImageButton
+        android:id="@+id/returnBtn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="48dp"
+        android:background="@drawable/shape_rounded_corners"
+        android:src="@drawable/image_button_pressed"
+        app:layout_constraintBottom_toTopOf="@+id/editArraivalName"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/editDepatureName"
+        app:layout_constraintVertical_bias="0.474" />
+
+    <Button
+        android:id="@+id/researchBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/research_btn_text"
+        android:textColor="@color/primaryLightColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/editArraivalName" />
 
     <TextView
         android:id="@+id/arrivalText"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:background="@color/primaryColor"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/arrival_text"
         android:textColor="@color/primaryLightColor"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintBottom_toBottomOf="@+id/editArraivalName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toTopOf="@+id/editArraivalName"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="100dp"
-        android:background="@color/primaryLightColor"
-        android:ems="10"
-        android:hint="駅"
-        android:inputType="textPersonName"
-        android:padding="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toEndOf="@+id/arrivalText"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
-
-    <ImageButton
-        android:id="@+id/returnBtn"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/shape_rounded_corners"
-        android:src="@drawable/image_button_pressed"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
-    <Button
-        android:id="@+id/researchBtn"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/research_btn_text"
-        android:textColor="@color/primaryLightColor"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="timePickerText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

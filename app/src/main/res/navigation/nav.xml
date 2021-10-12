@@ -27,5 +27,9 @@
         android:id="@+id/searchResultFragment"
         android:name="com.navinavi.SearchResultFragment"
         android:label="fragment_search_result"
-        tools:layout="@layout/fragment_search_result" />
+        tools:layout="@layout/fragment_search_result" >
+        <argument
+            android:name="sendUrl"
+            app:argType="string" />
+    </fragment>
 </navigation>

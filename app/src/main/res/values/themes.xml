@@ -17,8 +17,22 @@
     </style>
 
 <!--    datePickerStyle-->
-    <style name="datePickerStyle" parent="android:Widget.Material.DatePicker">
+    <style name="datePickerStyle" parent="Theme.MaterialComponents.Light.Dialog" />
+    <style name="datePickerStyle.Spinner">
+        <item name="android:datePickerStyle">@style/DatePickerDialogSpinnerDatePickerStyle</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+    </style>
+    <style name="DatePickerDialogSpinnerDatePickerStyle">
         <item name="android:datePickerMode">spinner</item>
-        <item name="android:calendarViewShown">false</item>
+    </style>
+
+<!--    timePickerStyle-->
+    <style name="timePickerStyle" parent="Theme.MaterialComponents.DayNight.Dialog"/>
+    <style name="timePickerStyle.Spinner">
+        <item name="android:timePickerStyle">@style/timePickerStyle.Spinner</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+    </style>
+    <style name="TimePickerDialogSpinnerTimePickerStyle">
+        <item name="android:timePickerMode">spinner</item>
     </style>
 </resources>
