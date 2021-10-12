@@ -221,11 +221,9 @@ class HomeFragment : Fragment() {
         }
 //        時刻設定しない場合現在時刻で検索される
         return if (binding.timePickerText.text == "現在時刻" || binding.timePickerText.text == "始発" || binding.timePickerText.text == "終電") {
-            Log.d("url","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&searchType=$searchType"
+            "https://api.ekispert.jp//v1/json/search/course/light?key=APIキー&from=$from&to=$to&searchType=$searchType"
         } else {
-            Log.d("elseurl","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&date=$date&time=$time&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&date=$date&time=$time&searchType=$searchType"
+            "https://api.ekispert.jp//v1/json/search/course/light?key=APIキー&from=$from&to=$to&date=$date&time=$time&searchType=$searchType"
         }
     }
 
