@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -42,13 +43,17 @@ class SearchResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val searchHistory = SearchHistoryEntity(id = 0, from = "from", to = "to", searchTypeDateTime = "searchTypeDateTime", url = "url")
-                dao.insert(searchHistory)
-            }
             withContext(Dispatchers.Main) {
                 dao.get20().observe(viewLifecycleOwner, Observer {
-                    Log.d("roomTest", it.toString())
+                    val list: MutableList<SearchHistoryEntity> = it as MutableList<SearchHistoryEntity>
+                    Log.d("roomTest", list.toString())
+                    for (item in list) {
+                        Log.d("roomTest", item.id.toString())
+                        Log.d("roomTest", item.from)
+                        Log.d("roomTest", item.to)
+                        Log.d("roomTest", item.searchTypeDateTime)
+                        Log.d("roomTest", item.url)
+                    }
                 })
 
             }

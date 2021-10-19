@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryDarkColor"
-    tools:context=".HomeFragment">
+    tools:context=".SearchFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -38,7 +38,7 @@
         android:id="@+id/timePickerText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="6dp"
         android:background="@color/primaryLightColor"
         android:drawableLeft="@drawable/ic_baseline_access_time_24"
         android:gravity="center_vertical"
@@ -53,14 +53,15 @@
     <EditText
         android:id="@+id/editDepatureName"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         android:background="@color/primaryLightColor"
         android:ems="10"
         android:hint="駅"
         android:inputType="textPersonName"
         android:padding="8dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/departureText"
@@ -76,7 +77,7 @@
         android:padding="8dp"
         android:text="@string/departure_text"
         android:textColor="@color/primaryLightColor"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/editDepatureName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/editDepatureName"
@@ -85,14 +86,15 @@
     <EditText
         android:id="@+id/editArraivalName"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="104dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:background="@color/primaryLightColor"
         android:ems="10"
         android:hint="駅"
         android:inputType="textPersonName"
         android:padding="8dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/arrivalText"
@@ -113,8 +115,8 @@
     <Button
         android:id="@+id/researchBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:text="@string/research_btn_text"
         android:textColor="@color/primaryLightColor"
         android:textSize="18sp"
@@ -133,18 +135,11 @@
         android:padding="8dp"
         android:text="@string/arrival_text"
         android:textColor="@color/primaryLightColor"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/editArraivalName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/editArraivalName"
         app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="left"
-        app:constraint_referenced_ids="timePickerText" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

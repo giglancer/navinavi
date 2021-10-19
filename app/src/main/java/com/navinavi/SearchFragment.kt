@@ -13,7 +13,11 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.room.Room
 import com.navinavi.databinding.FragmentHomeBinding
+import com.navinavi.room.SearchHistoryDAO
+import com.navinavi.room.SearchHistoryDatabase
+import com.navinavi.room.SearchHistoryEntity
 import com.savvyapps.togglebuttonlayout.Toggle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,10 +32,15 @@ import java.net.URL
 import java.util.Calendar
 import javax.net.ssl.HttpsURLConnection
 
-class HomeFragment : Fragment() {
+// ホーム画面(乗換検索画面)
+// 乗換検索APIを使用して乗換検索を実施する
+class SearchFragment : Fragment(), View.OnClickListener {
     companion object {
         private const val TAG = "HomeFragment"
     }
+    private lateinit var db: SearchHistoryDatabase
+    private lateinit var dao: SearchHistoryDAO
+    private lateinit var searchHistory: SearchHistoryEntity
 
     private var selectedYear: Int = 0
     private var selectedMonth: Int = 0
@@ -44,6 +53,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.db = Room.databaseBuilder(
+            requireContext(),
+            SearchHistoryDatabase::class.java,
+            "searchHistory.db"
+        ).build()
+        this.dao = this.db.searchHistoryDAO()
     }
 
     override fun onCreateView(
@@ -58,23 +73,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         toggleButtonView()
         toggleButtonClickLister()
-
-        binding.timePickerText.setOnClickListener {
-            showDateTimePicker().show()
-        }
-
-        binding.returnBtn.setOnClickListener {
-            replaceStationName()
-        }
-
-        binding.researchBtn.setOnClickListener {
-            if (validationCheck()) {
-                lifecycleScope.launch() {
-                    httpConnection()
-                }
-            }
-        }
-
+        onClickListener()
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -212,6 +211,7 @@ class HomeFragment : Fragment() {
         val date = "$urlYear$urlMonth$urlDay"
         val time = "$urlHourOfDay$urlMinute"
 
+
         val selectedStatus = binding.timePickerText.text
         var searchType = when  {
             selectedStatus == "現在時刻" || Regex("出発時刻").containsMatchIn(selectedStatus) -> "departure"
@@ -230,7 +230,7 @@ class HomeFragment : Fragment() {
     }
 
 //    apiレスポンスデータ加工
-    private fun is2String(stream: InputStream): String {
+    private fun inputStreamToString(stream: InputStream): String {
         val sb = StringBuilder()
         val reader = BufferedReader(InputStreamReader(stream, "UTF-8"))
         var line = reader.readLine()
@@ -241,7 +241,7 @@ class HomeFragment : Fragment() {
         reader.close()
         return sb.toString()
     }
-    private suspend fun httpConnection() {
+    private suspend fun requestSearchAPI() {
         var result = ""
         withContext(Dispatchers.IO) {
             val url = URL(createFullUrl())
@@ -257,7 +257,7 @@ class HomeFragment : Fragment() {
                     val resCode = con.responseCode
                     if (resCode == HttpsURLConnection.HTTP_OK) {
                         val stream = it.inputStream
-                        result = is2String(stream)
+                        result = inputStreamToString(stream)
                         stream.close()
                     } else {
                         withContext(Dispatchers.Main) {
@@ -269,6 +269,7 @@ class HomeFragment : Fragment() {
                     }
                 } catch (e: SocketTimeoutException) {
                     Log.w(TAG,"通信タイムアウト",e)
+                    Toast.makeText(requireContext(), "通信タイムアウト", Toast.LENGTH_SHORT).show()
                 }
                 it.disconnect()
             }
@@ -278,10 +279,72 @@ class HomeFragment : Fragment() {
                 val rootJSON = JSONObject(result)
                 val resultSetJSON = rootJSON.getJSONObject("ResultSet")
                 val resourceUri = resultSetJSON.getString("ResourceURI")
-                Log.d("私URL", resourceUri)
+                Log.d("URL", resourceUri)
 
-                val action = HomeFragmentDirections.actionHomeFragmentToSearchResultFragment(resourceUri)
+                insertSearchInformation(resourceUri)
+
+                val action = SearchFragmentDirections.actionHomeFragmentToSearchResultFragment(resourceUri)
                 findNavController().navigate(action)
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        if (v != null) {
+            when (v.id){
+                R.id.timePickerText -> showDateTimePicker().show()
+                R.id.returnBtn -> replaceStationName()
+                R.id.researchBtn -> {
+                    if (validationCheck()) {
+                        lifecycleScope.launch() {
+                            requestSearchAPI()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun onClickListener() {
+        binding.timePickerText.setOnClickListener(this)
+        binding.returnBtn.setOnClickListener(this)
+        binding.researchBtn.setOnClickListener(this)
+    }
+    private suspend fun insertSearchInformation(resourceUri: String) {
+        val cal = Calendar.getInstance()
+        selectedYear = cal.get(Calendar.YEAR)
+        selectedMonth = cal.get(Calendar.MONTH) + 1
+        selectedDay = cal.get(Calendar.DAY_OF_MONTH)
+        selectedHourOfDay = cal.get(Calendar.HOUR_OF_DAY)
+        selectedMinute = cal.get(Calendar.MINUTE)
+
+        val urlYear = String.format("%04d", selectedYear)
+        val urlMonth = String.format("%02d", selectedMonth)
+        val urlDay = String.format("%02d", selectedDay)
+        val urlHourOfDay = String.format("%02d", selectedHourOfDay)
+        val urlMinute = String.format("%02d", selectedMinute)
+        val date = "$urlYear/$urlMonth/$urlDay"
+        val time = "/$urlHourOfDay:$urlMinute"
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val selectedStatus = binding.timePickerText.text
+                var searchTypeDateTime = when  {
+                    selectedStatus == "現在時刻" || Regex("出発時刻").containsMatchIn(selectedStatus) -> "出発時刻：$date$time"
+                    selectedStatus == "始発" -> "始発：$date"
+                    selectedStatus == "終電" -> "終電：$date"
+                    else -> "到着時刻：$date"
+                }
+                val searchHistory = SearchHistoryEntity(
+                    id = 0,
+                    from = binding.editDepatureName.text.toString(),
+                    to = binding.editArraivalName.text.toString(),
+                    searchTypeDateTime = "$searchTypeDateTime",
+                    url = resourceUri
+                )
+                Log.d(TAG, searchHistory.toString())
+                dao.insert(searchHistory)
+                // 20以上表示しないので20を超えるものはデータから削除
+                dao.deleteOver20()
             }
         }
     }
