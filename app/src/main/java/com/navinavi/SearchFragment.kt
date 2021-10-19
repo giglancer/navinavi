@@ -332,7 +332,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
                     selectedStatus == "現在時刻" || Regex("出発時刻").containsMatchIn(selectedStatus) -> "出発時刻：$date$time"
                     selectedStatus == "始発" -> "始発：$date"
                     selectedStatus == "終電" -> "終電：$date"
-                    else -> "到着時刻：$date"
+                    else -> "到着時刻：$date$time"
                 }
                 val searchHistory = SearchHistoryEntity(
                     id = 0,
