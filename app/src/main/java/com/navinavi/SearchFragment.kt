@@ -11,10 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
-import com.navinavi.databinding.FragmentHomeBinding
+import com.navinavi.databinding.FragmentSearchBinding
 import com.navinavi.room.SearchHistoryDAO
 import com.navinavi.room.SearchHistoryDatabase
 import com.navinavi.room.SearchHistoryEntity
@@ -48,7 +47,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
     private var selectedHourOfDay: Int = 0
     private var selectedMinute: Int = 0
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,14 +64,13 @@ class SearchFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(layoutInflater)
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toggleButtonView()
-        toggleButtonClickLister()
+        initToggleButton()
         onClickListener()
     }
     override fun onDestroyView() {
@@ -81,7 +79,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
     }
 
 //    トグルボタン設定
-    private fun toggleButtonView() {
+    private fun initToggleButton() {
         binding.arrivalToLastTrainToggleButton.addToggle(Toggle(1, null, "出発"))
         binding.arrivalToLastTrainToggleButton.addToggle(Toggle(2, null, "到着"))
         binding.arrivalToLastTrainToggleButton.addToggle(Toggle(3, null, "始発"))
@@ -172,7 +170,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
         binding.editArraivalName.text = previousEditDepartureName
     }
 
-    private fun validationCheck(): Boolean {
+    private fun isDepartureToArrivalEmpty(): Boolean {
         var flg = true
         val departureText = binding.editDepatureName
         val arrivalText = binding.editArraivalName
@@ -222,10 +220,10 @@ class SearchFragment : Fragment(), View.OnClickListener {
 //        時刻設定しない場合現在時刻で検索される
         return if (binding.timePickerText.text == "現在時刻" || binding.timePickerText.text == "始発" || binding.timePickerText.text == "終電") {
             Log.d("url","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&searchType=$searchType"
+            "https://api.ekispert.jp//v1/json/search/course/light?key=${BuildConfig.API_KEY}&from=$from&to=$to&searchType=$searchType"
         } else {
             Log.d("elseurl","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&date=$date&time=$time&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&date=$date&time=$time&searchType=$searchType"
+            "https://api.ekispert.jp//v1/json/search/course/light?key=${BuildConfig.API_KEY}&from=$from&to=$to&date=$date&time=$time&searchType=$searchType"
         }
     }
 
@@ -295,7 +293,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
                 R.id.timePickerText -> showDateTimePicker().show()
                 R.id.returnBtn -> replaceStationName()
                 R.id.researchBtn -> {
-                    if (validationCheck()) {
+                    if (isDepartureToArrivalEmpty()) {
                         lifecycleScope.launch() {
                             requestSearchAPI()
                         }
@@ -308,6 +306,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
         binding.timePickerText.setOnClickListener(this)
         binding.returnBtn.setOnClickListener(this)
         binding.researchBtn.setOnClickListener(this)
+        toggleButtonClickLister()
     }
     private suspend fun insertSearchInformation(resourceUri: String) {
         val cal = Calendar.getInstance()

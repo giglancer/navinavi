@@ -60,12 +60,12 @@ class SearchHistoryFragment : Fragment() {
                 mAdapter = SearchHistoryAdapter(searchHistoryList)
                 recyclerView?.adapter = mAdapter
 
-                settingSearchHistoryClickListener()
+                searchHistoryRowClickListener()
             })
         }
     }
 
-    private fun settingSearchHistoryClickListener() {
+    private fun searchHistoryRowClickListener() {
         mAdapter.setOnSearchHistoryCellClickListener(
             object : SearchHistoryAdapter.OnSearchHistoryCellClickListener {
                 override fun onItemClick(url: String) {

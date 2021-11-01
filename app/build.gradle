@@ -43,6 +43,7 @@ android {
                         "room.expandProjection":"true"]
             }
         }
+        buildConfigField "String", "API_KEY", "\"${project.property("myApiKey")}\""
     }
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/return_arrow_dark"
+    <item android:drawable="@drawable/ic_exchange_button_pressed_image"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/return_arrow_dark"
+    <item android:drawable="@drawable/ic_exchange_button_pressed_image"
         android:state_focused="true" />
-    <item android:drawable="@drawable/return_arrow" />
+    <item android:drawable="@drawable/ic_exchange_button_image" />
 </selector>
