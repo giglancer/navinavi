@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
+import com.navinavi.data.SearchInformation
 import com.navinavi.databinding.FragmentSearchBinding
 import com.navinavi.room.SearchHistoryDAO
 import com.navinavi.room.SearchHistoryDatabase
@@ -39,7 +40,9 @@ class SearchFragment : Fragment(), View.OnClickListener {
     }
     private lateinit var db: SearchHistoryDatabase
     private lateinit var dao: SearchHistoryDAO
-    private lateinit var searchHistory: SearchHistoryEntity
+
+    // 検索APIのパラメータ
+    private val searchInformation = SearchInformation()
 
     private var selectedYear: Int = 0
     private var selectedMonth: Int = 0
@@ -199,19 +202,19 @@ class SearchFragment : Fragment(), View.OnClickListener {
     }
 
     private fun createFullUrl(): String {
-        val from = Uri.encode(binding.editDepatureName.text.toString())
-        val to = Uri.encode(binding.editArraivalName.text.toString())
         val urlYear = String.format("%04d", selectedYear)
         val urlMonth = String.format("%02d", selectedMonth)
         val urlDay = String.format("%02d", selectedDay)
         val urlHourOfDay = String.format("%02d", selectedHourOfDay)
         val urlMinute = String.format("%02d", selectedMinute)
-        val date = "$urlYear$urlMonth$urlDay"
-        val time = "$urlHourOfDay$urlMinute"
+        searchInformation.date = "$urlYear$urlMonth$urlDay"
+        searchInformation.time = "$urlHourOfDay$urlMinute"
+        searchInformation.from = Uri.encode(binding.editDepatureName.text.toString())
+        searchInformation.to = Uri.encode(binding.editArraivalName.text.toString())
 
 
         val selectedStatus = binding.timePickerText.text
-        var searchType = when  {
+        searchInformation.searchType = when  {
             selectedStatus == "現在時刻" || Regex("出発時刻").containsMatchIn(selectedStatus) -> "departure"
             selectedStatus == "始発" -> "firstTrain"
             selectedStatus == "終電" -> "lastTrain"
@@ -219,11 +222,17 @@ class SearchFragment : Fragment(), View.OnClickListener {
         }
 //        時刻設定しない場合現在時刻で検索される
         return if (binding.timePickerText.text == "現在時刻" || binding.timePickerText.text == "始発" || binding.timePickerText.text == "終電") {
-            Log.d("url","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=${BuildConfig.API_KEY}&from=$from&to=$to&searchType=$searchType"
+            "${searchInformation.baseUrl}${BuildConfig.API_KEY}" +
+                    "&from=${searchInformation.from}" +
+                    "&to=${searchInformation.to}" +
+                    "&searchType=${searchInformation.searchType}"
         } else {
-            Log.d("elseurl","https://api.ekispert.jp//v1/json/search/course/light?key=LE_VSz47p6345Jxc&from=$from&to=$to&date=$date&time=$time&searchType=$searchType")
-            "https://api.ekispert.jp//v1/json/search/course/light?key=${BuildConfig.API_KEY}&from=$from&to=$to&date=$date&time=$time&searchType=$searchType"
+            "${searchInformation.baseUrl}${BuildConfig.API_KEY}" +
+                    "&from=${searchInformation.from}" +
+                    "&to=${searchInformation.to}" +
+                    "&date=${searchInformation.date}" +
+                    "&time=${searchInformation.time}" +
+                    "&searchType=${searchInformation.searchType}"
         }
     }
 
@@ -309,20 +318,24 @@ class SearchFragment : Fragment(), View.OnClickListener {
         toggleButtonClickLister()
     }
     private suspend fun insertSearchInformation(resourceUri: String) {
-        val cal = Calendar.getInstance()
-        selectedYear = cal.get(Calendar.YEAR)
-        selectedMonth = cal.get(Calendar.MONTH) + 1
-        selectedDay = cal.get(Calendar.DAY_OF_MONTH)
-        selectedHourOfDay = cal.get(Calendar.HOUR_OF_DAY)
-        selectedMinute = cal.get(Calendar.MINUTE)
+        //　現在時刻で検索かつ時間指定なし
+        if (selectedYear == 0) {
+            val cal = Calendar.getInstance()
+            selectedYear = cal.get(Calendar.YEAR)
+            selectedMonth = cal.get(Calendar.MONTH) + 1
+            selectedDay = cal.get(Calendar.DAY_OF_MONTH)
+            selectedHourOfDay = cal.get(Calendar.HOUR_OF_DAY)
+            selectedMinute = cal.get(Calendar.MINUTE)
+        }
+        Log.d("selectedYear", selectedYear.toString())
 
-        val urlYear = String.format("%04d", selectedYear)
-        val urlMonth = String.format("%02d", selectedMonth)
-        val urlDay = String.format("%02d", selectedDay)
-        val urlHourOfDay = String.format("%02d", selectedHourOfDay)
-        val urlMinute = String.format("%02d", selectedMinute)
-        val date = "$urlYear/$urlMonth/$urlDay"
-        val time = "/$urlHourOfDay:$urlMinute"
+        val formatYear = String.format("%04d", selectedYear)
+        val formatMonth = String.format("%02d", selectedMonth)
+        val formatDay = String.format("%02d", selectedDay)
+        val formatHourOfDay = String.format("%02d", selectedHourOfDay)
+        val formatMinute = String.format("%02d", selectedMinute)
+        val date = "$formatYear/$formatMonth/$formatDay"
+        val time = "/$formatHourOfDay:$formatMinute"
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
