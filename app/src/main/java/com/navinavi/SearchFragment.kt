@@ -295,7 +295,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
+    //region View.OnClickListener
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id){
@@ -311,6 +311,8 @@ class SearchFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+    //endregion
+
     private fun onClickListener() {
         binding.timePickerText.setOnClickListener(this)
         binding.returnBtn.setOnClickListener(this)

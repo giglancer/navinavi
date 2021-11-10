@@ -68,11 +68,12 @@ class SearchHistoryFragment : Fragment() {
     private fun searchHistoryRowClickListener() {
         mAdapter.setOnSearchHistoryCellClickListener(
             object : SearchHistoryAdapter.OnSearchHistoryCellClickListener {
+                //region OnSearchHistoryCellClickListener
                 override fun onItemClick(url: String) {
                     val action = SearchHistoryFragmentDirections.actionSearchHistoryFragmentToSearchResultFragment(url)
                     findNavController().navigate(action)
                 }
-
+                //endregion
             }
         )
     }

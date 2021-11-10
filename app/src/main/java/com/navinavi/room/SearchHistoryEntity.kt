@@ -11,6 +11,4 @@ data class SearchHistoryEntity(
     val to: String,
     val searchTypeDateTime: String,
     val url: String
-    ) {
-
-}
+    )
