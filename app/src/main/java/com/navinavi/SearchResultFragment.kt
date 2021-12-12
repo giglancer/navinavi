@@ -24,40 +24,14 @@ import kotlinx.coroutines.withContext
 class SearchResultFragment : Fragment() {
     private val args: SearchResultFragmentArgs by navArgs()
 
-    private lateinit var db: SearchHistoryDatabase
-    private lateinit var dao: SearchHistoryDAO
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        this.db = Room.databaseBuilder(
-            requireContext(),
-            SearchHistoryDatabase::class.java,
-            "searchHistory.db"
-        ).build()
-        this.dao = this.db.searchHistoryDAO()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                dao.get20().observe(viewLifecycleOwner, Observer {
-                    val list: MutableList<SearchHistoryEntity> = it as MutableList<SearchHistoryEntity>
-                    Log.d("roomTest", list.toString())
-                    for (item in list) {
-                        Log.d("roomTest", item.id.toString())
-                        Log.d("roomTest", item.from)
-                        Log.d("roomTest", item.to)
-                        Log.d("roomTest", item.searchTypeDateTime)
-                        Log.d("roomTest", item.url)
-                    }
-                })
-
-            }
-        }
 
         return inflater.inflate(R.layout.fragment_search_result, container, false)
     }
